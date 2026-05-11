@@ -1,5 +1,8 @@
 import { AuthProvider } from "./context/AuthContext";
 import { SnackbarProvider } from "./context/SnackbarProvider";
+import { FuncionariosProvider } from "./context/FuncionariosContext";
+import { ClientesProvider } from "./context/ClientesContext";
+import { ProdutosProvider } from "./context/ProdutosContext";
 import { Container, ThemeProvider, CssBaseline } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
 import { theme } from "./theme"; // estilos globais
@@ -17,13 +20,19 @@ function App() {
                 <AuthProvider>
                     {/* O SnackbarProvider fornece notificações globais */}
                     <SnackbarProvider>
-                        {/* Navbar é o componente de navegação que contém os links para as diferentes páginas da aplicação */}
-                        <Navbar />
-                        {/* Container é um componente do Material-UI que fornece um layout responsivo e centralizado */}
-                        <Container maxWidth="xl" sx={{ mt: { xs: 2, sm: 3, md: 4 }, mb: { xs: 2, sm: 3, md: 4 }, px: { xs: 1, sm: 2 } }}>
-                            {/* AppRoutes é o componente que contém as rotas da aplicação, definindo quais componentes devem ser renderizados em cada rota */}
-                            <AppRoutes />
-                        </Container>
+                        <FuncionariosProvider>
+                            <ClientesProvider>
+                                <ProdutosProvider>
+                                    {/* Navbar é o componente de navegação que contém os links para as diferentes páginas da aplicação */}
+                                    <Navbar />
+                                    {/* Container é um componente do Material-UI que fornece um layout responsivo e centralizado */}
+                                    <Container maxWidth="xl" sx={{ mt: { xs: 2, sm: 3, md: 4 }, mb: { xs: 2, sm: 3, md: 4 }, px: { xs: 1, sm: 2 } }}>
+                                        {/* AppRoutes é o componente que contém as rotas da aplicação, definindo quais componentes devem ser renderizados em cada rota */}
+                                        <AppRoutes />
+                                    </Container>
+                                </ProdutosProvider>
+                            </ClientesProvider>
+                        </FuncionariosProvider>
                     </SnackbarProvider>
                 </AuthProvider>
             </BrowserRouter>

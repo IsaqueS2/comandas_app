@@ -1,20 +1,55 @@
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Box, InputLabel } from '@mui/material';
 import { PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import InputMask from 'react-input-mask';
+import { IMaskInput } from 'react-imask';
 import PageLayout from "../components/common/PageLayout";
 import { useValidationRules } from '../hooks/useValidationRules';
 import { useSnackbar } from '../context/useSnackbar';
+import { useClientes } from '../context/ClientesContext';
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+  const { onChange, ...other } = props;
+  return (
+    <IMaskInput
+      {...other}
+      mask="000.000.000-00"
+      definitions={{
+        '#': /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  );
+});
+
+const TextMaskCustomTelefone = React.forwardRef(function TextMaskCustomTelefone(props, ref) {
+  const { onChange, ...other } = props;
+  return (
+    <IMaskInput
+      {...other}
+      mask="(00) 00000-0000"
+      definitions={{
+        '#': /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  );
+});
 
 const ClienteForm = () => {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const validationRules = useValidationRules();
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
+  const { addCliente } = useClientes();
 
   const onSubmit = (data) => {
-    console.log('Dados do cliente:', data);
+    addCliente(data);
     showSnackbar('Cliente cadastrado com sucesso!', 'success');
     setTimeout(() => {
       navigate('/clientes');
@@ -65,6 +100,9 @@ const ClienteForm = () => {
               margin="normal"
               error={!!errors.cpf}
               helperText={errors.cpf?.message}
+              InputProps={{
+                inputComponent: TextMaskCustom,
+              }}
             />
           )}
         />
@@ -82,6 +120,9 @@ const ClienteForm = () => {
               margin="normal"
               error={!!errors.telefone}
               helperText={errors.telefone?.message}
+              InputProps={{
+                inputComponent: TextMaskCustomTelefone,
+              }}
             />
           )}
         />

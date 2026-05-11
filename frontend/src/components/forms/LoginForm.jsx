@@ -84,7 +84,32 @@ const LoginForm = () => {
                 margin="normal"
                 error={!!errors.cpf}
                 helperText={errors.cpf?.message}
-                sx={{ mb: 2 }}
+                sx={{
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    backgroundColor: '#ffffff',
+                    color: '#1e293b',
+                    '& fieldset': {
+                      borderColor: '#cbd5e1',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#1e40af',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#1e40af',
+                    },
+                  },
+                  '& .MuiOutlinedInput-input': {
+                    color: '#1e293b',
+                  },
+                  '& .MuiInputBase-input::placeholder': {
+                    color: '#94a3b8',
+                    opacity: 0.7,
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#475569',
+                  },
+                }}
               />
             )}
           />
@@ -103,7 +128,32 @@ const LoginForm = () => {
                 margin="normal"
                 error={!!errors.senha}
                 helperText={errors.senha?.message}
-                sx={{ mb: 3 }}
+                sx={{
+                  mb: 3,
+                  '& .MuiOutlinedInput-root': {
+                    backgroundColor: '#ffffff',
+                    color: '#1e293b',
+                    '& fieldset': {
+                      borderColor: '#cbd5e1',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#1e40af',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#1e40af',
+                    },
+                  },
+                  '& .MuiOutlinedInput-input': {
+                    color: '#1e293b',
+                  },
+                  '& .MuiInputBase-input::placeholder': {
+                    color: '#94a3b8',
+                    opacity: 0.7,
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#475569',
+                  },
+                }}
               />
             )}
           />
@@ -115,9 +165,11 @@ const LoginForm = () => {
             size="large"
             sx={{
               py: 1.5,
-              background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
+              background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
+              fontWeight: 600,
+              fontSize: '1rem',
               '&:hover': {
-                background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+                background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)',
               },
             }}
           >

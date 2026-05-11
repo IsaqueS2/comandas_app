@@ -24,12 +24,12 @@ const Navbar = () => {
 
   // Itens do menu com ícones e rotas
   const menuItems = [
-    { label: 'Dashboard', icon: <Avatar src="/minha_foto.jpeg" sx={{ width: 24, height: 24 }} />, path: '/home' },
-    { label: 'Funcionários', icon: <Avatar src="/minha_foto.jpeg" sx={{ width: 24, height: 24 }} />, path: '/funcionarios' },
-    { label: 'Clientes', icon: <Avatar src="/minha_foto.jpeg" sx={{ width: 24, height: 24 }} />, path: '/clientes' },
-    { label: 'Produtos', icon: <Avatar src="/minha_foto.jpeg" sx={{ width: 24, height: 24 }} />, path: '/produtos' },
-    { label: 'Comandas', icon: <Avatar src="/minha_foto.jpeg" sx={{ width: 24, height: 24 }} />, path: '/comandas' },
-    { label: 'Caixa', icon: <Avatar src="/minha_foto.jpeg" sx={{ width: 24, height: 24 }} />, path: '/caixa' },
+    { label: 'Dashboard', icon: <Dashboard />, path: '/home' },
+    { label: 'Funcionários', icon: <People />, path: '/funcionarios' },
+    { label: 'Clientes', icon: <Group />, path: '/clientes' },
+    { label: 'Produtos', icon: <RestaurantMenu />, path: '/produtos' },
+    { label: 'Comandas', icon: <Receipt />, path: '/comandas' },
+    { label: 'Caixa', icon: <PointOfSale />, path: '/caixa' },
   ];
 
   const drawer = (
@@ -87,7 +87,6 @@ const Navbar = () => {
               fontSize: { xs: '1.2rem', sm: '1.5rem' },
             }}
           >
-            <Avatar src="/minha_foto.jpeg" sx={{ width: { xs: 32, sm: 40 }, height: { xs: 32, sm: 40 } }} />
             <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
               Comandas do Zé
             </Box>
@@ -125,7 +124,7 @@ const Navbar = () => {
 
               <Tooltip title="Perfil" arrow>
                 <IconButton color="inherit">
-                  <Avatar src="/minha_foto.jpeg" sx={{ width: 32, height: 32, bgcolor: '#f59e0b' }} />
+                  <AccountCircle />
                 </IconButton>
               </Tooltip>
 
@@ -143,7 +142,7 @@ const Navbar = () => {
             <Box sx={{ display: { xs: 'flex', sm: 'none' }, alignItems: 'center', gap: 1 }}>
               <Tooltip title="Perfil" arrow>
                 <IconButton color="inherit">
-                  <Avatar src="/minha_foto.jpeg" sx={{ width: 32, height: 32, bgcolor: '#f59e0b' }} />
+                  <AccountCircle />
                 </IconButton>
               </Tooltip>
 

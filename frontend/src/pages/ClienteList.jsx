@@ -3,36 +3,11 @@ import { FiberNew, Person } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import PageLayout from "../components/common/PageLayout";
 import ActionButtons from "../components/common/ActionButtons";
+import { useClientes } from '../context/ClientesContext';
 
 function ClienteList() {
   const navigate = useNavigate();
-
-  const clientes = [
-    {
-      id: 1,
-      nome: 'Carlos Eduardo',
-      cpf: '111.222.333-44',
-      telefone: '(11) 99999-1111',
-      email: 'carlos@email.com',
-      endereco: 'Rua das Flores, 123',
-    },
-    {
-      id: 2,
-      nome: 'Ana Paula',
-      cpf: '555.666.777-88',
-      telefone: '(11) 88888-2222',
-      email: 'ana@email.com',
-      endereco: 'Av. Principal, 456',
-    },
-    {
-      id: 3,
-      nome: 'Roberto Silva',
-      cpf: '999.000.111-22',
-      telefone: '(11) 77777-3333',
-      email: 'roberto@email.com',
-      endereco: 'Rua do Comércio, 789',
-    },
-  ];
+  const { clientes, deleteCliente } = useClientes();
 
   const actions = (
     <Button
@@ -48,7 +23,11 @@ function ClienteList() {
 
   const handleView = (cliente) => console.log('Visualizar cliente:', cliente);
   const handleEdit = (cliente) => navigate(`/cliente/${cliente.id}`);
-  const handleDelete = (cliente) => console.log('Excluir cliente:', cliente);
+  const handleDelete = (cliente) => {
+    if (window.confirm(`Tem certeza que deseja excluir o cliente ${cliente.nome}?`)) {
+      deleteCliente(cliente.id);
+    }
+  };
 
   const columns = [
     { field: 'id', headerName: 'ID' },

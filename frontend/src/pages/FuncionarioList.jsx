@@ -3,36 +3,11 @@ import { FiberNew, People } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import PageLayout from "../components/common/PageLayout";
 import ActionButtons from "../components/common/ActionButtons";
+import { useFuncionarios } from '../context/FuncionariosContext';
 
 function FuncionarioList() {
   const navigate = useNavigate();
-
-  const funcionarios = [
-    {
-      id: 1,
-      nome: 'João Silva',
-      cpf: '123.456.789-00',
-      cargo: 'Garçom',
-      telefone: '(11) 99999-9999',
-      email: 'joao@email.com',
-    },
-    {
-      id: 2,
-      nome: 'Maria Santos',
-      cpf: '987.654.321-00',
-      cargo: 'Cozinheira',
-      telefone: '(11) 88888-8888',
-      email: 'maria@email.com',
-    },
-    {
-      id: 3,
-      nome: 'Pedro Oliveira',
-      cpf: '456.789.123-00',
-      cargo: 'Caixa',
-      telefone: '(11) 77777-7777',
-      email: 'pedro@email.com',
-    },
-  ];
+  const { funcionarios, deleteFuncionario } = useFuncionarios();
 
   const actions = (
     <Button
@@ -46,9 +21,15 @@ function FuncionarioList() {
     </Button>
   );
 
-  const handleView = (funcionario) => console.log('Visualizar funcionário:', funcionario);
+  const handleView = (funcionario) => {
+    // TODO: Implement view functionality
+  };
   const handleEdit = (funcionario) => navigate(`/funcionario/${funcionario.id}`);
-  const handleDelete = (funcionario) => console.log('Excluir funcionário:', funcionario);
+  const handleDelete = (funcionario) => {
+    if (window.confirm(`Tem certeza que deseja excluir o funcionário ${funcionario.nome}?`)) {
+      deleteFuncionario(funcionario.id);
+    }
+  };
 
   const columns = [
     { field: 'id', headerName: 'ID' },

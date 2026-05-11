@@ -1,20 +1,55 @@
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Box, InputLabel, MenuItem, Select, FormControl, Typography } from '@mui/material';
 import { PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import InputMask from 'react-input-mask';
+import { IMaskInput } from 'react-imask';
 import PageLayout from "../components/common/PageLayout";
 import { useValidationRules } from '../hooks/useValidationRules';
 import { useSnackbar } from '../context/useSnackbar';
+import { useFuncionarios } from '../context/FuncionariosContext';
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+  const { onChange, ...other } = props;
+  return (
+    <IMaskInput
+      {...other}
+      mask="000.000.000-00"
+      definitions={{
+        '#': /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  );
+});
+
+const TextMaskCustomTelefone = React.forwardRef(function TextMaskCustomTelefone(props, ref) {
+  const { onChange, ...other } = props;
+  return (
+    <IMaskInput
+      {...other}
+      mask="(00) 00000-0000"
+      definitions={{
+        '#': /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  );
+});
 
 const FuncionarioForm = () => {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const validationRules = useValidationRules();
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
+  const { addFuncionario } = useFuncionarios();
 
   const onSubmit = (data) => {
-    console.log('Dados do funcionário:', data);
+    addFuncionario(data);
     showSnackbar('Funcionário cadastrado com sucesso!', 'success');
     setTimeout(() => {
       navigate('/funcionarios');
@@ -67,18 +102,17 @@ const FuncionarioForm = () => {
           defaultValue=""
           rules={validationRules.cpf}
           render={({ field }) => (
-            <InputMask mask="999.999.999-99" {...field} alwaysShowMask={false}>
-              {(inputProps) => (
-                <TextField
-                  {...inputProps}
-                  label="CPF"
-                  fullWidth
-                  margin="normal"
-                  error={!!errors.cpf}
-                  helperText={errors.cpf?.message}
-                />
-              )}
-            </InputMask>
+            <TextField
+              {...field}
+              label="CPF"
+              fullWidth
+              margin="normal"
+              error={!!errors.cpf}
+              helperText={errors.cpf?.message}
+              InputProps={{
+                inputComponent: TextMaskCustom,
+              }}
+            />
           )}
         />
 
@@ -112,18 +146,17 @@ const FuncionarioForm = () => {
           defaultValue=""
           rules={validationRules.telefone}
           render={({ field }) => (
-            <InputMask mask="(99) 99999-9999" {...field} alwaysShowMask={false}>
-              {(inputProps) => (
-                <TextField
-                  {...inputProps}
-                  label="Telefone"
-                  fullWidth
-                  margin="normal"
-                  error={!!errors.telefone}
-                  helperText={errors.telefone?.message}
-                />
-              )}
-            </InputMask>
+            <TextField
+              {...field}
+              label="Telefone"
+              fullWidth
+              margin="normal"
+              error={!!errors.telefone}
+              helperText={errors.telefone?.message}
+              InputProps={{
+                inputComponent: TextMaskCustomTelefone,
+              }}
+            />
           )}
         />
 

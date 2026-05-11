@@ -2,12 +2,15 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
     palette: {
         mode: 'dark',
-        primary: { main: '#8b5cf6', light: '#a78bfa' }, // Roxo moderno
-        secondary: { main: '#f43f5e', light: '#fb7185' }, // Rosa/Vermelho
-        success: { main: '#10b981' },
-        error: { main: '#ef4444', light: '#f87171' },
-        text: { primary: '#f8fafc', secondary: '#cbd5e1' },
+        primary: { main: '#1e40af', light: '#3b82f6' }, // Azul escuro profissional
+        secondary: { main: '#7c3aed', light: '#a855f7' }, // Roxo
+        success: { main: '#059669' },
+        error: { main: '#dc2626', light: '#ef4444' },
+        warning: { main: '#d97706' },
+        info: { main: '#0284c7' },
+        text: { primary: '#f1f5f9', secondary: '#94a3b8' },
         background: { default: '#0f172a', paper: '#1e293b' },
+        divider: '#334155',
     },
     typography: {
         fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
@@ -26,7 +29,7 @@ export const theme = createTheme({
         },
         MuiAppBar: {
             styleOverrides: {
-                root: { background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' },
+                root: { background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)' },
             },
         },
         MuiTextField: {
@@ -34,7 +37,7 @@ export const theme = createTheme({
                 root: {
                     '& .MuiOutlinedInput-root': {
                         borderRadius: 8,
-                        '&.Mui-focused fieldset': { borderColor: '#8b5cf6' },
+                        '&.Mui-focused fieldset': { borderColor: '#3b82f6' },
                     },
                 },
             },

@@ -4,14 +4,18 @@ import { PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import PageLayout from "../components/common/PageLayout";
 import { useValidationRules } from '../hooks/useValidationRules';
+import { useProdutos } from '../context/ProdutosContext';
 
 const ProdutoForm = () => {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const validationRules = useValidationRules();
   const navigate = useNavigate();
+  const { addProduto } = useProdutos();
 
   const onSubmit = (data) => {
-    console.log('Dados do produto:', data);
+    addProduto(data);
+    console.log('Produto cadastrado:', data);
+    navigate('/produtos');
   };
 
   const handleFileChange = (event) => {

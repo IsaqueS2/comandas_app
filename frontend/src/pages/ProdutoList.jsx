@@ -3,33 +3,11 @@ import { FiberNew, Inventory } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import PageLayout from "../components/common/PageLayout";
 import ActionButtons from "../components/common/ActionButtons";
+import { useProdutos } from '../context/ProdutosContext';
 
 function ProdutoList() {
   const navigate = useNavigate();
-
-  const produtos = [
-    {
-      id: 1,
-      nome: 'Hambúrguer Clássico',
-      descricao: 'Pão, carne, alface, tomate, queijo',
-      valor_unitario: 25.9,
-      foto: '/src/assets/hero.png',
-    },
-    {
-      id: 2,
-      nome: 'Batata Frita',
-      descricao: 'Porção média de batata crocante',
-      valor_unitario: 12.5,
-      foto: '/src/assets/vite.svg',
-    },
-    {
-      id: 3,
-      nome: 'Refrigerante',
-      descricao: 'Lata 350ml',
-      valor_unitario: 8.0,
-      foto: '/src/assets/react.svg',
-    },
-  ];
+  const { produtos, deleteProduto } = useProdutos();
 
   const actions = (
     <Button
@@ -48,7 +26,11 @@ function ProdutoList() {
 
   const handleView = (produto) => console.log('Visualizar produto:', produto);
   const handleEdit = (produto) => navigate(`/produto/${produto.id}`);
-  const handleDelete = (produto) => console.log('Excluir produto:', produto);
+  const handleDelete = (produto) => {
+    if (window.confirm(`Tem certeza que deseja excluir o produto ${produto.nome}?`)) {
+      deleteProduto(produto.id);
+    }
+  };
 
   const columns = [
     { field: 'id', headerName: 'ID' },
