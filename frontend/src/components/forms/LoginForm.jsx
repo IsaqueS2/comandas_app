@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useAuth } from "../../context/AuthContext";
-import { TextField, Button, Box, Typography, Paper, Avatar } from "@mui/material";
+import { TextField, Button, Box, Typography, Paper, Avatar, Alert, Snackbar } from "@mui/material";
 import { RestaurantMenu as MenuIcon } from "@mui/icons-material";
 import useValidationRules from "../../hooks/useValidationRules";
 
 const LoginForm = () => {
+  const [loginError, setLoginError] = useState("");
   const validationRules = useValidationRules();
   // hook para gerenciar o formulário
   // useForm é usado para gerenciar o estado do formulário, como os valores dos campos e as validações.
@@ -17,9 +19,13 @@ const LoginForm = () => {
   // login é uma função que realiza o login do usuário
   const { login } = useAuth();
   // função que chama o login do AuthContext ao enviar o formulário
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    setLoginError("");
     const { cpf, senha } = data;
-    login(cpf, senha);
+    const result = await login(cpf, senha);
+    if (!result?.success) {
+      setLoginError(result?.error || "CPF ou senha inválidos. Tente novamente.");
+    }
   };
 
   return (
@@ -68,6 +74,22 @@ const LoginForm = () => {
             Faça login para acessar o sistema
           </Typography>
         </Box>
+
+        <Snackbar
+          open={!!loginError}
+          autoHideDuration={5000}
+          onClose={() => setLoginError("")}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <Alert 
+            onClose={() => setLoginError("")} 
+            severity="error" 
+            variant="filled" 
+            sx={{ width: '100%', borderRadius: 2, boxShadow: 4, fontWeight: 'bold' }}
+          >
+            {loginError}
+          </Alert>
+        </Snackbar>
 
         {/* Formulário */}
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>

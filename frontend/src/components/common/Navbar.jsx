@@ -1,5 +1,5 @@
-import { AppBar, Toolbar, Typography, Button, Box, IconButton, Tooltip, Avatar, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider } from '@mui/material';
-import { Dashboard, People, Group, RestaurantMenu, Receipt, PointOfSale, Logout, AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
+import { AppBar, Toolbar, Typography, Button, Box, IconButton, Tooltip, Avatar, Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Menu, MenuItem } from '@mui/material';
+import { Dashboard, People, Group, RestaurantMenu, Receipt, PointOfSale, Logout, AccountCircle, Menu as MenuIcon, Badge as BadgeIcon, Fingerprint as FingerprintIcon, Settings as SettingsIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
 import { useState } from 'react';
@@ -10,9 +10,26 @@ const Navbar = () => {
   // useAuth é um hook personalizado que fornece acesso ao contexto de autenticação
   // logout é uma função que realiza o logout do usuário
   // isAuthenticated é um booleano que indica se o usuário está autenticado ou não
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   // Estado para controlar a abertura do drawer mobile
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  // Estado para o menu do usuário
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const formatCPF = (cpf) => {
+    if (!cpf) return 'N/A';
+    const cleaned = ('' + cpf).replace(/\D/g, '');
+    if (cleaned.length !== 11) return cpf;
+    return cleaned.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+  };
 
   const handleLogout = () => {
     logout();
@@ -123,8 +140,16 @@ const Navbar = () => {
               ))}
 
               <Tooltip title="Perfil" arrow>
-                <IconButton color="inherit">
-                  <AccountCircle />
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 1 }}>
+                  {user?.nome ? (
+                    <Avatar sx={{ width: 36, height: 36, bgcolor: 'primary.dark', color: 'white', fontWeight: 'bold' }}>
+                      {user.nome.charAt(0).toUpperCase()}
+                    </Avatar>
+                  ) : (
+                    <Avatar sx={{ width: 36, height: 36, bgcolor: 'primary.dark' }}>
+                      <AccountCircle />
+                    </Avatar>
+                  )}
                 </IconButton>
               </Tooltip>
 
@@ -141,8 +166,16 @@ const Navbar = () => {
 
             <Box sx={{ display: { xs: 'flex', sm: 'none' }, alignItems: 'center', gap: 1 }}>
               <Tooltip title="Perfil" arrow>
-                <IconButton color="inherit">
-                  <AccountCircle />
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 1 }}>
+                  {user?.nome ? (
+                    <Avatar sx={{ width: 36, height: 36, bgcolor: 'primary.dark', color: 'white', fontWeight: 'bold' }}>
+                      {user.nome.charAt(0).toUpperCase()}
+                    </Avatar>
+                  ) : (
+                    <Avatar sx={{ width: 36, height: 36, bgcolor: 'primary.dark' }}>
+                      <AccountCircle />
+                    </Avatar>
+                  )}
                 </IconButton>
               </Tooltip>
 
@@ -172,6 +205,66 @@ const Navbar = () => {
       >
         {drawer}
       </Drawer>
+
+      <Menu
+        sx={{ 
+          mt: '45px', 
+          '& .MuiPaper-root': { 
+            borderRadius: 2, 
+            minWidth: 260, 
+            boxShadow: '0px 4px 20px rgba(0,0,0,0.1)', 
+          } 
+        }}
+        id="menu-appbar"
+        anchorEl={anchorElUser}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={Boolean(anchorElUser)}
+        onClose={handleCloseUserMenu}
+      >
+        <Box sx={{ px: 3, py: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+            <Avatar sx={{ width: 50, height: 50, bgcolor: 'primary.main', fontSize: '1.5rem', fontWeight: 'bold' }}>
+              {user?.nome ? user.nome.charAt(0).toUpperCase() : '?'}
+            </Avatar>
+            <Box>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                {user?.nome || 'Usuário'}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ textTransform: 'capitalize', mt: 0.5 }}>
+                {user?.cargo || 'Funcionário'}
+              </Typography>
+            </Box>
+          </Box>
+          
+          <Divider sx={{ my: 1.5 }} />
+          
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <BadgeIcon sx={{ color: 'action.active', mr: 1.5, fontSize: 20 }} />
+              <Box>
+                <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.2 }}>Matrícula</Typography>
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>{user?.matricula || 'N/A'}</Typography>
+              </Box>
+            </Box>
+            
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <FingerprintIcon sx={{ color: 'action.active', mr: 1.5, fontSize: 20 }} />
+              <Box>
+                <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.2 }}>CPF</Typography>
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>{formatCPF(user?.cpf)}</Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Menu>
     </AppBar>
   );
 };
